@@ -1,11 +1,12 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
+  
 }
+
 
 $role = $_SESSION['role'] ?? null;
 $name = $_SESSION['first_name'] ?? '';
-
 
 
 
@@ -25,18 +26,18 @@ $linkClass = "text-sm text-gray-600 hover:text-blue-600 focus:outline-none focus
   <nav class="max-w-7xl w-full mx-auto px-4 flex flex-wrap items-center justify-between">
 
     <!-- Brand -->
-    <a href="../home/feed.php" class="text-xl font-semibold text-gray-900">WorkNest</a>
+    <a href="<?= BASE_URL ?>" class="text-xl font-semibold text-gray-900">WorkNest</a>
 
-    <!-- Right side -->
+    <!-- Right side-->
     <div class="sm:order-3 flex items-center gap-x-3">
       <?php if ($role): ?>
         <span class="hidden sm:inline text-sm text-gray-700">Hello, <?= htmlspecialchars($name) ?></span>
-        <a href="../auth/logout.php"
+        <a href="<?= BASE_URL ?>auth/logout"
            class="py-2 px-3 text-sm font-medium rounded-lg border border-gray-300 hover:bg-gray-100">
            Logout
         </a>
       <?php else: ?>
-        <a href="../auth/login.php"
+        <a href="<?= BASE_URL ?>auth/login"
            class="py-2 px-3 text-sm font-medium rounded-lg bg-blue-600 text-white hover:bg-blue-700">
            Login
         </a>
@@ -56,20 +57,20 @@ $linkClass = "text-sm text-gray-600 hover:text-blue-600 focus:outline-none focus
     <div id="menu" class="hidden basis-full sm:order-2 sm:flex sm:basis-auto sm:grow-0">
       <div class="flex flex-col gap-5 mt-5 sm:flex-row sm:items-center sm:mt-0 sm:ps-5">
 
-   
+    
 
         <?php if ($role === 'admin'): ?>
-            <a href="/admin/dashboard" class="<?= $linkClass ?>">Dashboard</a>
-            <a href="/admin/users" class="<?= $linkClass ?>">Users</a>
+            <a href="<?= BASE_URL ?>admin/dashboard" class="<?= $linkClass ?>">Dashboard</a>
+            <a href="<?= BASE_URL ?>admin/users" class="<?= $linkClass ?>">Users</a>
 
         <?php elseif ($role === 'company'): ?>
-            <a href="/company/myPosts" class="<?= $linkClass ?>">My Posts</a>
-            <a href="/company/createPost" class="<?= $linkClass ?>">Create Post</a>
-            <a href="/company/profile" class="<?= $linkClass ?>">Profile</a>
+            <a href="<?= BASE_URL ?>company/myPosts" class="<?= $linkClass ?>">My Posts</a>
+            <a href="<?= BASE_URL ?>company/createPost" class="<?= $linkClass ?>">Create Post</a>
+            <a href="<?= BASE_URL ?>company/profile" class="<?= $linkClass ?>">Profile</a>
 
         <?php elseif ($role === 'candidate'): ?>
-            <a href="/candidate/savedPosts" class="<?= $linkClass ?>">Saved Posts</a>
-            <a href="/candidate/profile" class="<?= $linkClass ?>">Profile</a>
+            <a href="<?= BASE_URL ?>candidate/savedPosts" class="<?= $linkClass ?>">Saved Posts</a>
+            <a href="<?= BASE_URL ?>candidate/profile" class="<?= $linkClass ?>">Profile</a>
         <?php endif; ?>
 
       </div>

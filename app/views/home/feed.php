@@ -1,79 +1,11 @@
 <?php
-include __DIR__ . '/../layouts/header.php';
+include __DIR__ . '/../layouts/header.php'; 
 
 
-$posts = [
-    [
-        'id'          => 1,
-        'company'     => 'TechNova',
-        'title'       => 'Frontend Intern',
-        'gig_type'    => 'fixed',
-        'budget'      => 300,
-        'description' => 'We need a React intern for 2 months to help build our dashboard and fix UI bugs.',
-        'created_at'  => '2026-11-20',
-        'proposals'   => 4,
-    ],
-    [
-        'id'          => 2,
-        'company'     => 'PixelWorks',
-        'title'       => 'UI/UX Designer (Gig)',
-        'gig_type'    => 'hourly',
-        'budget'      => 15,
-        'description' => 'Design mobile app screens in Figma. Experience with design systems is a plus.',
-        'created_at'  => '2026-11-22',
-        'proposals'   => 9,
-    ],
-    [
-        'id'          => 3,
-        'company'     => 'DataBridge',
-        'title'       => 'Data Entry Specialist',
-        'gig_type'    => 'hourly',
-        'budget'      => 8,
-        'description' => 'Clean and organize spreadsheets for a retail client. Attention to detail is a must.',
-        'created_at'  => '2026-11-23',
-        'proposals'   => 12,
-    ],
-    [
-        'id'          => 4,
-        'company'     => 'TechNova',
-        'title'       => 'PHP Backend Intern',
-        'gig_type'    => 'fixed',
-        'budget'      => 450,
-        'description' => 'Help us build REST endpoints in plain PHP and write simple MySQL queries.',
-        'created_at'  => '2026-11-24',
-        'proposals'   => 2,
-    ],
-    [
-        'id'          => 5,
-        'company'     => 'Writely',
-        'title'       => 'Content Writer',
-        'gig_type'    => 'fixed',
-        'budget'      => 120,
-        'description' => 'Write 10 blog articles about remote work. Native-level English is required.',
-        'created_at'  => '2026-11-25',
-        'proposals'   => 6,
-    ],
-];
-
-/*  البحث */
-$q    = trim($_GET['q'] ?? '');
-$date = $_GET['date'] ?? '';
-
-$posts = array_filter($posts, function ($p) use ($q, $date) {
-    if ($q !== '' && stripos($p['title'], $q) === false
-                  && stripos($p['company'], $q) === false) {
-        return false;
-    }
-    if ($date !== '' && $p['created_at'] !== $date) {
-        return false;
-    }
-    return true;
-});
-
-$loginUrl = '/auth/login';
+$loginUrl = BASE_URL . 'auth/login';
 ?>
 
-<h1 class="text-2xl font-bold mb-4">Remote internships &amp; gigs</h1>
+<h1 class="text-2xl font-bold mb-4">Remote internships & gigs</h1>
 
 <!-- Search -->
 <form method="GET" class="flex flex-wrap gap-3 mb-6">
@@ -140,31 +72,36 @@ $loginUrl = '/auth/login';
                 <?= (int) $post['proposals'] ?> proposals
             </p>
 
-            <!-- Actions  -->
+            <!-- Actions -->
             <div class="mt-auto pt-4 flex gap-3">
 
-                <?php if ($role === 'candidate' || $role === null): ?>
-                    <a href="<?= $role ? '/candidate/savePost/' . $post['id'] : $loginUrl ?>"
+                <?php if ($role === 'candidate'): ?>
+                    <a href="<?= BASE_URL ?>candidate/savePost/<?= (int) $post['id'] ?>"
                        class="py-2 px-3 text-sm font-medium rounded-lg border border-gray-300 hover:bg-gray-100">
                         Save
                     </a>
-                    <a href="<?= $role ? '/candidate/apply/' . $post['id'] : $loginUrl ?>"
+                    <a href="<?= BASE_URL ?>candidate/apply/<?= (int) $post['id'] ?>"
                        class="py-2 px-3 text-sm font-medium rounded-lg bg-blue-600 text-white hover:bg-blue-700">
                         Apply
                     </a>
 
+                <?php elseif ($role === null): ?>
+                    <a href="<?= BASE_URL ?>auth/login"
+                       class="py-2 px-3 text-sm font-medium rounded-lg bg-blue-600 text-white hover:bg-blue-700">
+                        Login
+                    </a>
+
                 <?php elseif ($role === 'admin'): ?>
-                    <a href="/admin/editPost/<?= (int) $post['id'] ?>"
+                    <a href="<?= BASE_URL ?>admin/editPost/<?= (int) $post['id'] ?>"
                        class="py-2 px-3 text-sm font-medium rounded-lg border border-gray-300 hover:bg-gray-100">
                         Edit
                     </a>
-                    <a href="/admin/deletePost/<?= (int) $post['id'] ?>"
+                    <a href="<?= BASE_URL ?>admin/deletePost/<?= (int) $post['id'] ?>"
                        onclick="return confirm('Delete this post?')"
                        class="py-2 px-3 text-sm font-medium rounded-lg bg-red-600 text-white hover:bg-red-700">
                         Delete
                     </a>
                 <?php endif; ?>
-                <?php  ?>
 
             </div>
         </div>

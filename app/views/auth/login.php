@@ -1,44 +1,5 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
 
-$users = [
-    'admin'     => ['password' => 'admin123',   'role' => 'admin',     'first_name' => 'Admin'],
-    'company'  => ['password' => 'company123', 'role' => 'company',   'first_name' => 'TechNova'],
-    'candidate'=> ['password' => 'cand123',    'role' => 'candidate', 'first_name' => 'Sara'],
-];
-
-
-$redirects = [
-    'admin'     => '../home/feed.php',
-    'company'   => '../home/feed.php',
-    'candidate' => '../home/feed.php',
-];
-
-$error    = '';
-$username = '';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = trim($_POST['username'] ?? '');
-    $password = $_POST['password'] ?? '';
-// var_dump($username, $password);
-// error_log("user=[" . $username . "] pass=[" . $password . "]");
-    if ($username === '' || $password === '') {
-        $error = 'Please enter your username and password.';
-    } elseif (!isset($users[$username]) || $users[$username]['password'] !== $password) {
-      
-        $error = 'Incorrect username or password.';
-    } else {
-        session_regenerate_id(true);
-        $_SESSION['username']   = $username;
-        $_SESSION['role']       = $users[$username]['role'];
-        $_SESSION['first_name'] = $users[$username]['first_name'];
-
-        header('Location: ' . $redirects[$_SESSION['role']]);
-        exit;
-    }
-}
 
 
 include __DIR__ . '/../layouts/header.php';
@@ -47,7 +8,7 @@ include __DIR__ . '/../layouts/header.php';
 <div class="max-w-md mx-auto mt-10">
     <div class="bg-white border border-gray-200 shadow-sm rounded-xl p-6">
 
-        <h1 class="text-2xl font-bold text-center text-blue-600">LOGIN</h1>
+        <h1 class="text-2xl font-bold text-center text-blue-600">Login</h1>
         <p class="text-sm text-gray-500 mt-1">
             Use the username and password given to you by the admin.
         </p>
@@ -59,7 +20,7 @@ include __DIR__ . '/../layouts/header.php';
             </div>
         <?php endif; ?>
 
-        <form method="POST" class="mt-5 space-y-4">
+        <form method="POST" action="<?= BASE_URL ?>auth/login" class="mt-5 space-y-4">
 
             <div>
                 <label for="username" class="block text-sm font-medium mb-1">Username</label>
